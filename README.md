@@ -1,2 +1,1 @@
-# ReconocimientoFacial
-#lola esta noche
+# ReconocimientoFacialConIA
