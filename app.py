@@ -43,14 +43,14 @@ st.markdown("""
 @st.cache_resource
 def cargar_modelo():
     # Asegúrate de que el nombre del archivo coincida con el tuyo
-    return tf.keras.models.load_model('modelo_emociones.keras')
+    return tf.keras.models.load_model('c:\\Users\\yasir\\Desktop\\Diego\\Visual Studio codigos\\proyecto_emociones\\modelo_emociones.keras')
 
 modelo = cargar_modelo()
 
 # Diccionario de emociones con Emojis y Colores relacionados
 info_emociones = {
     'angry': {'nombre': 'Enojo', 'emoji': '😡', 'color': '#ff4b4b'},
-    'disgust': {'nombre': 'Asco', 'emoji': '🤢', 'color': '#4baf51'},
+    'disgust': {'nombre': 'Asco', 'emoji': '🤢', 'color': '#4baf51'},  # ESTA EMOCION TIENE EXPRECIONES QUE SE PUEDEN IDENTIFIACAR COMO OTRAS ASI QUE QUEDA EN DESCARTADA O ERROR DE LECTURA.
     'fear': {'nombre': 'Miedo', 'emoji': '😱', 'color': '#9c27b0'},
     'happy': {'nombre': 'Alegría', 'emoji': '😊', 'color': '#ffeb3b'},
     'neutral': {'nombre': 'Neutral', 'emoji': '😐', 'color': '#9e9e9e'},
@@ -79,9 +79,11 @@ with col2:
     if archivo_subido:
         if st.button("Descifrar Estado de Ánimo"):
             # Preparar imagen
-            img_redimensionada = imagen.resize((48, 48))
-            img_array = np.array(img_redimensionada) 
+            img_redimensionada = imagen.resize((125, 125))
+            img_array = np.array(img_redimensionada)
             img_array = np.expand_dims(img_array, axis=[0, -1])
+
+            st.write(f"Rango de píxeles: {img_array.min()} - {img_array.max()}")
             
             # Predicción
             with st.spinner('Escaneando micro-expresiones...'):
@@ -93,6 +95,15 @@ with col2:
                 res = info_emociones[clase_id]
             
             # Resultado visual
+            # Cambiar el fondo de la página según la emoción detectada
+            st.markdown(f"""<style>
+                .stApp, .main, .block-container {{
+                background-color: {res['color']} !important;
+                }}
+                </style>
+                """, unsafe_allow_html=True
+            )
+
             st.markdown(f"""
                 <div class="emotion-card" style="border-left: 10px solid {res['color']};">
                     <h1 style="font-size: 80px; margin: 0;">{res['emoji']}</h1>
